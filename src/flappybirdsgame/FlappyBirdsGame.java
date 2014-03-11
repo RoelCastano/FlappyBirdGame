@@ -8,7 +8,7 @@ package flappybirdsgame;
 
 /**
  *
- * @author roelcastano
+ * @author Henry
  */
 public class FlappyBirdsGame {
 
@@ -16,7 +16,9 @@ public class FlappyBirdsGame {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+         	JFrameFlappyBirdsGame flappyBirdsGame = new JFrameFlappyBirdsGame();
+ 		flappyBirdsGame.setVisible(true);
+                flappyBirdsGame.setSize(500, 500);
     }
     
 }
