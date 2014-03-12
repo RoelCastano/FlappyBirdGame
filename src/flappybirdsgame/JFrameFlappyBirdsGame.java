@@ -159,7 +159,7 @@ import java.awt.event.MouseMotionListener;
             	//Guarda el tiempo actual del sistema
                 tiempoActual = System.currentTimeMillis();
 		while (true) {
-                        if(!pausa){
+                        if(!pausa && !gameOver){
                             actualiza();
                             checaColision();
                         }
@@ -183,6 +183,9 @@ import java.awt.event.MouseMotionListener;
                //Determina el tiempo que ha transcurrido desde que el Applet inicio su ejecución
                long tiempoTranscurrido =
                 System.currentTimeMillis() - tiempoActual;
+               if(gameOver){
+                   escucharMouse = false;
+               }
                if(empieza){
                     if(brinca){
                         velocidad = -UPWARD_SPEED;
@@ -217,11 +220,13 @@ import java.awt.event.MouseMotionListener;
 	 */
      public void checaColision() {
          
-         if(babe.getPosY()<50){    //cuando esta en el tope de arriba ya no le hace caso al mouse
+         if(babe.getPosY()<50 ){    //cuando esta en el tope de arriba ya no le hace caso al mouse
              escucharMouse = false;
          }
          else{
-             escucharMouse = true;
+             if(!gameOver){
+                escucharMouse = true;
+             }
          }
          
          if(babe.getPosY()>(getHeight()-40)){ // cuando pega al piso
@@ -276,7 +281,7 @@ import java.awt.event.MouseMotionListener;
         public void mousePressed(MouseEvent e) {
             if(escucharMouse)     //si esta dentro del rango permitido, deja que brinque
                 brinca = true;
-            empieza = true;     //utilizada par empezar el movimiento del juego
+            if(!gameOver)empieza = true;     //utilizada par empezar el movimiento del juego
             //System.out.print("hola ");
                         
         }
