@@ -48,7 +48,7 @@ import java.awt.event.MouseMotionListener;
 	private Malo columna;    //Objeto de la clase Malo
         private LinkedList<Malo> lista; // lista para guardar los monitos malos
         private int velocidad;
-        private  static int UPWARD_SPEED = 5;
+        private  static int UPWARD_SPEED = 8;
         private static int GRAVITY = 2; 
         boolean pausa; // para pausa
         boolean brinca; // para checar si brinca
@@ -73,7 +73,7 @@ import java.awt.event.MouseMotionListener;
  	}
         
         public void init() {
-                setSize(500, 500);
+                setSize(300, 500);
                 score = 0;
                 colisiono = false;
                 tiempoColision = 0;
@@ -186,7 +186,7 @@ import java.awt.event.MouseMotionListener;
                         brinca = false;
                     }
                     contador++;
-                    if(contador>=8){
+                    if(contador>=4){
 
                         velocidad += (GRAVITY);
                         contador =0;
