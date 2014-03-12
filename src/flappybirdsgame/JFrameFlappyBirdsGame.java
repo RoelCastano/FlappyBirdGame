@@ -51,7 +51,8 @@ import java.awt.event.MouseMotionListener;
 	private Malo vampiro;    //Objeto de la clase Malo
         private LinkedList<Malo> lista; // lista para guardar los monitos malos
         private int velocidad;
-        boolean pausa;
+        boolean pausa; // para pausa
+        boolean brinca; // para checar si brinca
         boolean desaparece;
         private SoundClip explosion;	//Sonido de explosion
 	private SoundClip beep;	//Sonido de beep
@@ -78,10 +79,12 @@ import java.awt.event.MouseMotionListener;
 		direccion = 0;
 		int posX = (int) (getWidth() / 4);    // posicion en x en medio de la applet
 		int posY = (int) (getHeight() /2);    // posicion en y enmedio de la applet
+                velocidad = posY;
 		babe = new Bueno(posX,posY);
 		setBackground (Color.yellow);
                 lista = new LinkedList<Malo>();  //lista encadenada para guardar malos
                 pausa = false; // iniciliza la pausa como false
+                brinca = false;
                 desaparece = false;
 
                 
@@ -177,12 +180,16 @@ import java.awt.event.MouseMotionListener;
                //Determina el tiempo que ha transcurrido desde que el Applet inicio su ejecución
                long tiempoTranscurrido =
                 System.currentTimeMillis() - tiempoActual;
-
+               velocidad+=2;
+               if(brinca){
+                   velocidad-=40;
+                   brinca = false;
+               }
+               babe.setPosY(velocidad);
                //Guarda el tiempo actual
                tiempoActual += tiempoTranscurrido;
                //Actualiza la animación en base al tiempo transcurrido
                babe.animBabe.actualiza(tiempoTranscurrido);
-            
 	}
         
         /**
@@ -216,6 +223,8 @@ import java.awt.event.MouseMotionListener;
                 
             posClicX = e.getX();
             posClicY = e.getY();
+            brinca = true;
+            //System.out.print("hola ");
                         
         }
 		
