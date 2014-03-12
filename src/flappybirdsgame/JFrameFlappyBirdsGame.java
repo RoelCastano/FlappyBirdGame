@@ -54,7 +54,9 @@ import java.awt.event.MouseMotionListener;
         boolean brinca; // para checar si brinca
         boolean empieza; // empieza el juego
         boolean desaparece;
+        boolean gameOver; // cuando pierde el jugador
         boolean escucharMouse; //utilizado pra saber cuando hacerle caso al mouse
+        boolean success; //utiliada para saber cuando pasa entre dos columnas
         private int contador;
         private SoundClip explosion;	//Sonido de explosion
 	private SoundClip beep;	//Sonido de beep
@@ -76,6 +78,7 @@ import java.awt.event.MouseMotionListener;
                 setSize(350, 600);
                 score = 0;
                 colisiono = false;
+                success = false;
                 tiempoColision = 0;
                 contador = 0;
                 escucharMouse = true;  // empieza escuchando el mouse
@@ -88,19 +91,16 @@ import java.awt.event.MouseMotionListener;
                 pausa = false; // iniciliza la pausa como false
                 brinca = false; //inizializa la booleana de brinco como false
                 empieza = false; // inicio juego
+                gameOver = false; // empieza false el gameOver
                 desaparece = false;
-                columna = new Malo(getWidth(),-300);
+            for (int i = 0; i < 3; i++) {
+                int y = -50 + (int)(Math.random()*-300);;
+                int x = i * 200;
+                columna = new Malo(getWidth() + x, y);
                 lista.add(columna);
-                columna = new Malo(getWidth(),300);
+                columna = new Malo(getWidth() + x, y+550);
                 lista.add(columna);
-                columna = new Malo(getWidth()+200,-350);
-                lista.add(columna);
-                columna = new Malo(getWidth()+200,175);
-                lista.add(columna);
-                columna = new Malo(getWidth()+400,-250);
-                lista.add(columna);
-                columna = new Malo(getWidth()+400,350);
-                lista.add(columna);
+            }
                 
 
 
@@ -193,13 +193,14 @@ import java.awt.event.MouseMotionListener;
                         contador =0;
                     }
 
-                    babe.setPosY(babe.getPosY()+velocidad);
-               }
+                babe.setPosY(babe.getPosY() + velocidad);
+
+                for (int i = 0; i < lista.size(); i++) {
+                    columna = lista.get(i);
+                    columna.setPosX(columna.getPosX() - 2);
+                }
+            }
                
-               for (int i = 0; i < lista.size(); i++){
-                   columna = lista.get(i);
-                   columna.setPosX(columna.getPosX() - 2);
-               }
                //Guarda el tiempo actual
                tiempoActual += tiempoTranscurrido;
                //Actualiza la animación en base al tiempo transcurrido
@@ -221,8 +222,19 @@ import java.awt.event.MouseMotionListener;
          
          if(babe.getPosY()>(getHeight()-40)){
              empieza = false;
+             gameOver = true;
          }
-         
+         for (int i = 0; i < lista.size(); i++) {
+               columna = lista.get(i);
+               if(babe.intersecta(columna)){
+                    empieza = false;
+                    gameOver = true;
+                }
+               if(babe.getPosX()==columna.getPosX()){
+                   score++;
+               }
+         }
+
 
          if (colisiono == true && tiempoColision <= 30) {
              tiempoColision++;
@@ -324,6 +336,9 @@ import java.awt.event.MouseMotionListener;
                         }
                         //score = vampiro.getConteo();
                         g.drawString("SCORE: " + score, 20, 40);
+                        if(gameOver){
+                            g.drawString("GAME OVER", getWidth()/2, getHeight()/2);
+                        }
                         if(pausa){
                             g.drawString(""+babe.getPausa(),babe.getPosX()+babe.getAncho(), babe.getPosY());
                         }
