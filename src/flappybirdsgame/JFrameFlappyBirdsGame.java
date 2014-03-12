@@ -100,7 +100,7 @@ import java.awt.event.MouseMotionListener;
                 int x = i * 200;
                 columna = new Malo(getWidth() + x, y);
                 lista.add(columna);
-                columna = new Malo(getWidth() + x, y+565);
+                columna = new Malo(getWidth() + x, y+575);
                 lista.add(columna);
             }
                 
@@ -260,7 +260,7 @@ import java.awt.event.MouseMotionListener;
                 columna1.setPosX(x);
                 columna2.setPosX(x);
                 columna1.setPosY(y);
-                columna2.setPosY(y+565);
+                columna2.setPosY(y+575);
              }
          }
 
