@@ -76,7 +76,7 @@ import java.awt.event.MouseMotionListener;
                 colisiono = false;
                 tiempoColision = 0;
 		direccion = 0;
-		int posX = (int) (getWidth() / 2);    // posicion en x en medio de la applet
+		int posX = (int) (getWidth() / 4);    // posicion en x en medio de la applet
 		int posY = (int) (getHeight() /2);    // posicion en y enmedio de la applet
 		babe = new Bueno(posX,posY);
 		setBackground (Color.yellow);
@@ -99,25 +99,7 @@ import java.awt.event.MouseMotionListener;
                 int mitadMalos = numMalos/2;
 
 
-                for (int i = 0; i < mitadMalos; i++){ // primera mitad de los malos aparecen por la parte izq
-                    //int posrX = (int) (Math.random() * (getWidth()));    
-                    int posrY = (int) (Math.random() * (getHeight()));
-                    velocidad = (int) (Math.random()*3)+3;
-                    vampiro = new Malo(-2,posrY, velocidad);
-                    vampiro.setPosX(vampiro.getPosX() - vampiro.getAncho());
-                    vampiro.setPosY(vampiro.getPosY() - vampiro.getAlto());
-                    lista.add(vampiro);
-                }
-                
-                for (int i = mitadMalos; i < numMalos; i++){ /// segunda mitad de los malos aparecen por parte der
-                    //int posrX = (int) (Math.random() * (getWidth()));    
-                    int posrY = (int) (Math.random() * (getHeight()));
-                    velocidad = (int) -((Math.random()*3)+3);
-                    vampiro = new Malo(getWidth()+3,posrY, velocidad);
-                    vampiro.setPosX(vampiro.getPosX() - vampiro.getAncho());
-                    vampiro.setPosY(vampiro.getPosY() - vampiro.getAlto());
-                    lista.add(vampiro);
-                }
+
 		//Pinta el fondo del Applet de color amarillo		
 		setBackground(Color.white);
 		addKeyListener(this);
@@ -192,35 +174,6 @@ import java.awt.event.MouseMotionListener;
 	 */
 	public void actualiza() {
             
-                switch(direccion){
-                   case 1: {
-                           babe.setPosY(babe.getPosY() - 2);
-                           //babe.setPosX(babe.getPosX() + 5);
-                           break;    //se mueve hacia arriba derecha
-                   }
-                   case 2: {
-                           babe.setPosX(babe.getPosX() + 2);
-                           //babe.setPosY(babe.getPosY() + 5);
-                           
-                           break;    //se mueve hacia abajo derecha	
-                   }
-                   case 3: {
-                           babe.setPosX(babe.getPosX() - 2);
-                           //babe.setPosY(babe.getPosY() + 5);
-                           break;    //se mueve hacia abajo izquierda
-                   }
-                   case 4: {
-                           //babe.setPosX(babe.getPosX() - 5);
-                           babe.setPosY(babe.getPosY() + 2);
-                           break;    //se mueve hacia arriba izquierda	
-                   }
-               }
-
-               for (Malo vampiro : lista) {
-                   vampiro.setPosX(vampiro.getPosX() + vampiro.getVelocidad());
-               }
-
-
                //Determina el tiempo que ha transcurrido desde que el Applet inicio su ejecución
                long tiempoTranscurrido =
                 System.currentTimeMillis() - tiempoActual;
@@ -229,9 +182,6 @@ import java.awt.event.MouseMotionListener;
                tiempoActual += tiempoTranscurrido;
                //Actualiza la animación en base al tiempo transcurrido
                babe.animBabe.actualiza(tiempoTranscurrido);
-               for (Malo vampiro : lista) {
-                   vampiro.animVamp.actualiza(tiempoTranscurrido);
-               }
             
 	}
         
@@ -239,67 +189,16 @@ import java.awt.event.MouseMotionListener;
 	 * Metodo usado para checar las colisiones del objeto elefante y vampiro
 	 * con las orillas del <code>Applet</code>.
 	 */
-	public void checaColision() {
-                //Colision del bueno con el Applet 
-		if (babe.getPosX() + babe.getAncho() > getWidth()) {
-			babe.setPosX(babe.getPosX()-5);
-		}
-		if (babe.getPosX() < 0) {
-			babe.setPosX(babe.getPosX()+5);
-		}
+     public void checaColision() {
 
-		//Colision entre objetos
-                for (Malo vampiro : lista) {
-                    //Colision entre objetos
-                    if( babe.intersecta(vampiro)) {
-                            colisiono=true;
-                            beep.play();
-                            desaparece = true;
-                            score++;
-                            vampiro.setConteo(vampiro.getConteo()+1);
-                            if(vampiro.getVelocidad() < 0){
-                                    int posrY = (int) (Math.random() * (getHeight()));
-                                    vampiro.setPosX(getWidth()+2);
-                                    vampiro.setPosY(posrY);
-                            }
-                            else{
-                                    int posrY = (int) (Math.random() * (getHeight()));
-                                    vampiro.setPosX(-2);
-                                    vampiro.setPosY(posrY);
-                            }
-                            
-                    }
-                    
-                } 
-                
-                if (colisiono == true && tiempoColision <= 30) {
-                    tiempoColision++;
-                } else {
-                    colisiono = false;
-                    tiempoColision = 0;
-                }
-                
-                //colision entre paredes
-                for (Malo vampiro : lista) {
-                    if(vampiro.getVelocidad()<0){
-                            if (vampiro.getPosX() + vampiro.getAncho() < -125 ) {
-                                    int posrY = (int) (Math.random() * (getHeight()));
-                                    vampiro.setPosY(posrY);
-                                    vampiro.setPosX(getWidth()+10);
-                                    explosion.play();
-                            }
-                    }
-                    else{
-                        if ((vampiro.getPosX() + vampiro.getAncho()) > getWidth()+30) {
-                                int posrY = (int) (Math.random() * (getHeight()));
-                                vampiro.setPosX(-5);
-                                vampiro.setPosY(posrY);
-                                explosion.play();
-                        }
-                    }
-                }
+         if (colisiono == true && tiempoColision <= 30) {
+             tiempoColision++;
+         } else {
+             colisiono = false;
+             tiempoColision = 0;
+         }
 
-	}
+     }
         
         public void mouseClicked(MouseEvent e) { }
         
@@ -317,20 +216,7 @@ import java.awt.event.MouseMotionListener;
                 
             posClicX = e.getX();
             posClicY = e.getY();
-            
-            if(getWidth()/2 > posClicX && getHeight()/2 > posClicY){
-                direccion = 1;
-            }
-            else if(getWidth()/2 < posClicX && getHeight()/2 > posClicY){
-                direccion = 2;
-            }
-            else if(getWidth()/2 > posClicX && getHeight()/2 < posClicY){
-                direccion = 3;
-            }
-            else if(getWidth()/2 < posClicX && getHeight()/2 < posClicY){
-                direccion = 4;
-            }
-            
+                        
         }
 		
 	/**
@@ -363,26 +249,11 @@ import java.awt.event.MouseMotionListener;
 	 * En este metodo maneja el evento que se genera al presionar cualquier la tecla.
 	 * @param e es el <code>evento</code> generado al presionar las teclas.
 	 */
-        public void keyPressed(KeyEvent e) {
-                    if (e.getKeyCode() == KeyEvent.VK_UP) {    //Presiono flecha arriba
-                            direccion = 1;
-                    } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {    //Presiono flecha abajo
-                            direccion = 2;
-                    } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {    //Presiono flecha izquierda
-                            direccion = 3;
-                    } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {    //Presiono flecha derecha
-                            direccion = 4;
-                    }
-                    if (e.getKeyCode() == KeyEvent.VK_P){
-                        if(pausa){
-                            pausa = false;
-                            direccion = 0;
-                        }
-                        else
-                            pausa = true;
-                    }
-                        
-        }
+     public void keyPressed(KeyEvent e) {
+         if (e.getKeyCode() == KeyEvent.VK_P) {
+             pausa = !pausa;
+         }
+     }
 
         /**
              * Metodo <I>keyTyped</I> sobrescrito de la interface <code>KeyListener</code>.<P>
@@ -411,16 +282,10 @@ import java.awt.event.MouseMotionListener;
 	 */
 	public void paint1(Graphics g) {
             
-		if (babe != null && vampiro != null) {
+		if (babe != null) {
                         g.drawImage(babe.getImagen(), babe.getPosX(), babe.getPosY(), this);
-			g.drawImage(vampiro.getImagen(), vampiro.getPosX(),
-                                    vampiro.getPosY(), this);
-                        //pinta los vampiros en la lista
-                        for (Malo vampiro : lista) {
-                            g.drawImage(vampiro.getImagen(), vampiro.getPosX(), vampiro.getPosY(), this);
-                        }
                         //score = vampiro.getConteo();
-                        g.drawString("SCORE: " + vampiro.getConteo(), 20, 40);
+                        g.drawString("SCORE: " + score, 20, 40);
                         if(pausa){
                             g.drawString(""+babe.getPausa(),babe.getPosX()+babe.getAncho(), babe.getPosY());
                         }
