@@ -220,11 +220,11 @@ import java.awt.event.MouseMotionListener;
              escucharMouse = true;
          }
          
-         if(babe.getPosY()>(getHeight()-40)){
+         if(babe.getPosY()>(getHeight()-40)){ // cuando pega al piso
              empieza = false;
              gameOver = true;
          }
-         for (int i = 0; i < lista.size(); i++) {
+         for (int i = 0; i < lista.size(); i++) { // entre el pajaro y las colunas
                columna = lista.get(i);
                if(babe.intersecta(columna)){
                     empieza = false;
