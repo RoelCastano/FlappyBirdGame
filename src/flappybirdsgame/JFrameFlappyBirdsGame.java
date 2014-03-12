@@ -47,13 +47,14 @@ import java.awt.event.MouseMotionListener;
 	private Bueno babe;    // Objeto de la clase Bueno
 	private Malo columna;    //Objeto de la clase Malo
         private LinkedList<Malo> lista; // lista para guardar los monitos malos
-        private int velocidad;
+        private int velocidad;     //velocidad utilizada para el movimiento del flappy
         private  static int UPWARD_SPEED = 9;
         private static int GRAVITY = 2; 
         boolean pausa; // para pausa
         boolean brinca; // para checar si brinca
         boolean empieza; // empieza el juego
         boolean desaparece;
+        boolean escucharMouse; //utilizado pra saber cuando hacerle caso al mouse
         private int contador;
         private SoundClip explosion;	//Sonido de explosion
 	private SoundClip beep;	//Sonido de beep
@@ -64,7 +65,6 @@ import java.awt.event.MouseMotionListener;
  	public JFrameFlappyBirdsGame(){
  		setTitle("BEST GAME EVER");
  		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 		//setSize(500, 500);
                 //Carga los clips de sonido
 		explosion = new SoundClip("sonidos/Explosion.wav");
 		beep = new SoundClip("sonidos/beep-07.wav");
@@ -78,6 +78,7 @@ import java.awt.event.MouseMotionListener;
                 colisiono = false;
                 tiempoColision = 0;
                 contador = 0;
+                escucharMouse = true;  // empieza escuchando el mouse
 		int posX = (int) (getWidth() / 4);    // posicion en x en medio de la applet
 		int posY = (int) (getHeight() /2);    // posicion en y enmedio de la applet
                 velocidad = 0;
@@ -85,7 +86,7 @@ import java.awt.event.MouseMotionListener;
 		setBackground (Color.yellow);
                 lista = new LinkedList<Malo>();  //lista encadenada para guardar malos
                 pausa = false; // iniciliza la pausa como false
-                brinca = false;
+                brinca = false; //inizializa la booleana de brinco como false
                 empieza = false; // inicio juego
                 desaparece = false;
                 columna = new Malo(getWidth(),-300);
@@ -210,6 +211,18 @@ import java.awt.event.MouseMotionListener;
 	 * con las orillas del <code>Applet</code>.
 	 */
      public void checaColision() {
+         
+         if(babe.getPosY()<50){    //cuando esta en el tope de arriba ya no le hace caso al mouse
+             escucharMouse = false;
+         }
+         else{
+             escucharMouse = true;
+         }
+         
+         if(babe.getPosY()>(getHeight()-40)){
+             empieza = false;
+         }
+         
 
          if (colisiono == true && tiempoColision <= 30) {
              tiempoColision++;
@@ -233,9 +246,9 @@ import java.awt.event.MouseMotionListener;
         public void mouseExited(MouseEvent e) {}
 
         public void mousePressed(MouseEvent e) {
-                
-            brinca = true;
-            empieza = true;
+            if(escucharMouse)     //si esta dentro del rango permitido, deja que brinque
+                brinca = true;
+            empieza = true;     //utilizada par empezar el movimiento del juego
             //System.out.print("hola ");
                         
         }
