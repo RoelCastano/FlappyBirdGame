@@ -18,7 +18,7 @@ public class Malo extends Base {
 	public Malo(int posX,int posY){
 		super(posX,posY); //constructor
                 //Se cargan las imágenes(cuadros) para la animación del malo
-		Image column1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenesColumna/column.gif"));
+		Image column1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("imagenesColumna/column.jpg"));
                 
                 //Se crea la animación
 		animColumn = new Animacion();
