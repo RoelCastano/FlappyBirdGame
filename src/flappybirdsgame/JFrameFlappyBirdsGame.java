@@ -46,6 +46,8 @@ import java.awt.event.MouseMotionListener;
 	private Graphics dbg;	// Objeto grafico
 	private Bueno babe;    // Objeto de la clase Bueno
 	private Malo columna;    //Objeto de la clase Malo
+	private Malo columna1;    //Objeto de la clase Malo
+	private Malo columna2;    //Objeto de la clase Malo
         private LinkedList<Malo> lista; // lista para guardar los monitos malos
         private int velocidad;
         private  static int UPWARD_SPEED = 8;
@@ -89,11 +91,11 @@ import java.awt.event.MouseMotionListener;
                 empieza = false; // inicio juego
                 desaparece = false;
             for (int i = 0; i < 3; i++) {
-                int y = -50 + (int)(Math.random()*-300);;
+                int y = -50 + (int)(Math.random()*-300);
                 int x = i * 200;
                 columna = new Malo(getWidth() + x, y);
                 lista.add(columna);
-                columna = new Malo(getWidth() + x, y+550);
+                columna = new Malo(getWidth() + x, y+560);
                 lista.add(columna);
             }
                 
@@ -191,6 +193,8 @@ import java.awt.event.MouseMotionListener;
                 babe.setPosY(babe.getPosY() + velocidad);
 
                 for (int i = 0; i < lista.size(); i++) {
+                    int y = -50 + (int)(Math.random()*-300);
+                    int x = i * 200;
                     columna = lista.get(i);
                     columna.setPosX(columna.getPosX() - 2);
                 }
@@ -213,6 +217,18 @@ import java.awt.event.MouseMotionListener;
          } else {
              colisiono = false;
              tiempoColision = 0;
+         }
+         for (int i = 0; i < lista.size(); i=i+2) {
+             columna1 = lista.get(i);
+             columna2 = lista.get(i+1);
+             if (columna1.getPosX()+columna.getAncho() < 0){
+                int y = -50 + (int)(Math.random()*-300);
+                int x = getWidth() + 250;
+                columna1.setPosX(x);
+                columna2.setPosX(x);
+                columna1.setPosY(y);
+                columna2.setPosY(y+560);
+             }
          }
 
      }
