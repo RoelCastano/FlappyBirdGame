@@ -204,7 +204,13 @@ import java.awt.event.MouseMotionListener;
                     int y = -50 + (int)(Math.random()*-300);
                     int x = i * 200;
                     columna = lista.get(i);
-                    columna.setPosX(columna.getPosX() - 2);
+                    if (score < 10){
+                        columna.setPosX(columna.getPosX() - 2);
+                    } else if (score >= 10 && score < 20) {
+                        columna.setPosX(columna.getPosX() - 3);
+                    } else {
+                        columna.setPosX(columna.getPosX() - 4);
+                    }
                 }
             }
                
@@ -364,7 +370,7 @@ import java.awt.event.MouseMotionListener;
                         //score = vampiro.getConteo();
                         g.drawString("SCORE: " + score, 20, 40);
                         if(gameOver){
-                            g.drawString("GAME OVER", getWidth()/2, getHeight()/2);
+                            g.drawString("GAME OVER", getWidth()/2-40, getHeight()/2);
                         }
                         if(pausa){
                             g.drawString(""+babe.getPausa(),babe.getPosX()+babe.getAncho(), babe.getPosY());
