@@ -201,8 +201,6 @@ import java.awt.event.MouseMotionListener;
                 babe.setPosY(babe.getPosY() + velocidad);
 
                 for (int i = 0; i < lista.size(); i++) {
-                    int y = -50 + (int)(Math.random()*-300);
-                    int x = i * 200;
                     columna = lista.get(i);
                     if (score < 10){
                         columna.setPosX(columna.getPosX() - 2);
@@ -331,6 +329,11 @@ import java.awt.event.MouseMotionListener;
      public void keyPressed(KeyEvent e) {
          if (e.getKeyCode() == KeyEvent.VK_P) {
              pausa = !pausa;
+         }
+         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            if(escucharMouse)     //si esta dentro del rango permitido, deja que brinque
+                brinca = true;
+            if(!gameOver)empieza = true;     //utilizada par empezar el movimiento del juego
          }
      }
 
