@@ -189,20 +189,6 @@ import javax.swing.JOptionPane;
                  System.out.println("Error en " + ex.toString());
              }
          }
-         String nombre = JOptionPane.showInputDialog("Cual es tu nombre?");
-         JOptionPane.showMessageDialog(null,
-                 "El puntaje de " + nombre + " es: " + score, "PUNTAJE",
-                 JOptionPane.PLAIN_MESSAGE);
-         try {
-
-             //Agrega el contenido del nuevo puntaje al vector.
-             vec.add(new Puntaje(score, nombre));
-            //ordenaVector();
-             //Graba el vector en el archivo.
-             grabaArchivo();
-         } catch (IOException e) {
-         }
-
 	}
         
         /**
@@ -403,6 +389,9 @@ import javax.swing.JOptionPane;
                  reinicio = true;
                  gameOver = false;
             }
+         }
+         if (e.getKeyCode() == KeyEvent.VK_F){
+             
          }
      }
 
