@@ -32,6 +32,15 @@ import java.util.Collections;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Vector;
+import javax.swing.JOptionPane;
 //
 
  public class JFrameFlappyBirdsGame extends JFrame implements Runnable, KeyListener, MouseListener, MouseMotionListener
@@ -66,6 +75,11 @@ import java.awt.event.MouseMotionListener;
         int score;
         private List<Integer> listaNum;
         int numMalos;
+        
+        private String nombreArchivo;    //Nombre del archivo.
+        private String[] arr;    //Arreglo del archivo divido.
+        private Vector vec;    // Objeto vector para agregar el puntaje.
+
  	
  	public JFrameFlappyBirdsGame(){
  		setTitle("BEST GAME EVER");
@@ -106,6 +120,8 @@ import java.awt.event.MouseMotionListener;
                     lista.add(columna);
                 }
                 
+                nombreArchivo = "Puntaje.txt";
+                vec = new Vector();
 
 
 		//Pinta el fondo del Applet de color amarillo		
@@ -157,23 +173,36 @@ import java.awt.event.MouseMotionListener;
      * se repinta el <code>Applet</code> y luego manda a dormir el hilo.
      * 
      */
-	public void run () {
-            	//Guarda el tiempo actual del sistema
-                tiempoActual = System.currentTimeMillis();
-		while (true) {
-                        if(!pausa && !gameOver){
-                            actualiza();
-                            checaColision();
-                        }
-			repaint();    // Se actualiza el <code>Applet</code> repintando el contenido.
-			try	{
-				// El thread se duerme.
-				Thread.sleep (20);
-			}
-			catch (InterruptedException ex)	{
-				System.out.println("Error en " + ex.toString());
-			}
-		}
+     public void run() {
+         //Guarda el tiempo actual del sistema
+         tiempoActual = System.currentTimeMillis();
+         while (!gameOver) {
+             if (!pausa) {
+                 actualiza();
+                 checaColision();
+             }
+             repaint();    // Se actualiza el <code>Applet</code> repintando el contenido.
+             try {
+                 // El thread se duerme.
+                 Thread.sleep(20);
+             } catch (InterruptedException ex) {
+                 System.out.println("Error en " + ex.toString());
+             }
+         }
+         String nombre = JOptionPane.showInputDialog("Cual es tu nombre?");
+         JOptionPane.showMessageDialog(null,
+                 "El puntaje de " + nombre + " es: " + score, "PUNTAJE",
+                 JOptionPane.PLAIN_MESSAGE);
+         try {
+
+             //Agrega el contenido del nuevo puntaje al vector.
+             vec.add(new Puntaje(score, nombre));
+            //ordenaVector();
+             //Graba el vector en el archivo.
+             grabaArchivo();
+         } catch (IOException e) {
+         }
+
 	}
         
         /**
@@ -421,6 +450,50 @@ import java.awt.event.MouseMotionListener;
 		}
 		
 	}
- 	 	
+        
+    /**
+     * Metodo que lee a informacion de un archivo y lo agrega a un vector.
+     *
+     * @throws IOException
+     */
+    public void leeArchivo() throws IOException {
+        BufferedReader fileIn;
+        try {
+            fileIn = new BufferedReader(new FileReader(nombreArchivo));
+        } catch (FileNotFoundException e) {
+            File puntos = new File(nombreArchivo);
+            PrintWriter fileOut = new PrintWriter(puntos);
+            fileOut.println("0, None");
+            fileOut.close();
+            fileIn = new BufferedReader(new FileReader(nombreArchivo));
+        }
+        String dato = fileIn.readLine();
+
+        while (dato != null) {
+            arr = dato.split(",");
+            int num = (Integer.parseInt(arr[0]));
+            String nombre = arr[1];
+            vec.add(new Puntaje(num, nombre));
+            dato = fileIn.readLine();
+
+        }
+        fileIn.close();
+    }
+
+    /**
+     * Metodo que agrega la informacion del vector al archivo.
+     *
+     * @throws IOException
+     */
+    public void grabaArchivo() throws IOException {
+        PrintWriter fileOut = new PrintWriter(new FileWriter(nombreArchivo));
+        for (int i = 0; i < vec.size(); i++) {
+            Puntaje x;
+            x = (Puntaje) vec.get(i);
+            fileOut.println(x.toString());
+        }
+        fileOut.close();
+    }
+    
 
  }
