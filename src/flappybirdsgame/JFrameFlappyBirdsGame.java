@@ -88,18 +88,14 @@ import java.awt.event.MouseMotionListener;
                 brinca = false;
                 empieza = false; // inicio juego
                 desaparece = false;
-                columna = new Malo(getWidth(),-300);
+            for (int i = 0; i < 3; i++) {
+                int y = -50 + (int)(Math.random()*-300);;
+                int x = i * 200;
+                columna = new Malo(getWidth() + x, y);
                 lista.add(columna);
-                columna = new Malo(getWidth(),300);
+                columna = new Malo(getWidth() + x, y+550);
                 lista.add(columna);
-                columna = new Malo(getWidth()+200,-350);
-                lista.add(columna);
-                columna = new Malo(getWidth()+200,175);
-                lista.add(columna);
-                columna = new Malo(getWidth()+400,-250);
-                lista.add(columna);
-                columna = new Malo(getWidth()+400,350);
-                lista.add(columna);
+            }
                 
 
 
@@ -192,13 +188,14 @@ import java.awt.event.MouseMotionListener;
                         contador =0;
                     }
 
-                    babe.setPosY(babe.getPosY()+velocidad);
-               }
+                babe.setPosY(babe.getPosY() + velocidad);
+
+                for (int i = 0; i < lista.size(); i++) {
+                    columna = lista.get(i);
+                    columna.setPosX(columna.getPosX() - 2);
+                }
+            }
                
-               for (int i = 0; i < lista.size(); i++){
-                   columna = lista.get(i);
-                   columna.setPosX(columna.getPosX() - 2);
-               }
                //Guarda el tiempo actual
                tiempoActual += tiempoTranscurrido;
                //Actualiza la animación en base al tiempo transcurrido
