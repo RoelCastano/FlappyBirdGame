@@ -232,18 +232,18 @@ import javax.swing.JOptionPane;
                
             if (reinicio) {    //si deicde reiniciar el juego
                 System.out.print("si ");
-                for (int n = 0; n < 3; n+=2) {
+                for (int i = 0; i < lista.size(); i = i + 2) {
+                    columna1 = lista.get(i);
+                    columna2 = lista.get(i + 1);
                     int y = -50 + (int) (Math.random() * -300);
-                    int x = n * 200;
-                    columna = lista.get(n);
-                    columna.setPosX(getWidth() + x);
-                    columna.setPosY(y);
-                    columna = lista.get(n+1);
-                    columna.setPosX(getWidth() + x);
-                    columna.setPosY(y + 575);
+                    int x = getWidth() + 250;
+                    columna1.setPosX(x);
+                    columna2.setPosX(x);
+                    columna1.setPosY(y);
+                    columna2.setPosY(y + 575);
                 }
+                score = 0;
                 velocidad = 0;
-                babe = new Bueno(posX, posY);
                 babe.setPosX(getWidth()/4);
                 babe.setPosY(getHeight() / 2);
                 reinicio = false;
