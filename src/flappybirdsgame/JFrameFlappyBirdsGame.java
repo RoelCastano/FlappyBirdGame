@@ -55,6 +55,7 @@ import java.awt.event.MouseMotionListener;
         boolean pausa; // para pausa
         boolean brinca; // para checar si brinca
         boolean empieza; // empieza el juego
+        boolean reinicio; // para reiniciar el juego
         boolean desaparece;
         boolean gameOver; // cuando pierde el jugador
         boolean escucharMouse; //utilizado pra saber cuando hacerle caso al mouse
@@ -79,6 +80,7 @@ import java.awt.event.MouseMotionListener;
         public void init() {
                 setSize(350, 600);
                 score = 0;
+                reinicio = false;
                 colisiono = false;
                 success = false;
                 tiempoColision = 0;
@@ -95,14 +97,14 @@ import java.awt.event.MouseMotionListener;
                 empieza = false; // inicio juego
                 gameOver = false; // empieza false el gameOver
                 desaparece = false;
-            for (int i = 0; i < 3; i++) {
-                int y = -50 + (int)(Math.random()*-300);
-                int x = i * 200;
-                columna = new Malo(getWidth() + x, y);
-                lista.add(columna);
-                columna = new Malo(getWidth() + x, y+575);
-                lista.add(columna);
-            }
+                for (int i = 0; i < 3; i++) {
+                    int y = -50 + (int) (Math.random() * -300);
+                    int x = i * 200;
+                    columna = new Malo(getWidth() + x, y);
+                    lista.add(columna);
+                    columna = new Malo(getWidth() + x, y + 575);
+                    lista.add(columna);
+                }
                 
 
 
@@ -210,6 +212,26 @@ import java.awt.event.MouseMotionListener;
                         columna.setPosX(columna.getPosX() - 4);
                     }
                 }
+            }
+               
+            if (reinicio) {    //si deicde reiniciar el juego
+                System.out.print("si ");
+                for (int n = 0; n < 3; n+=2) {
+                    int y = -50 + (int) (Math.random() * -300);
+                    int x = n * 200;
+                    columna = lista.get(n);
+                    columna.setPosX(getWidth() + x);
+                    columna.setPosY(y);
+                    columna = lista.get(n+1);
+                    columna.setPosX(getWidth() + x);
+                    columna.setPosY(y + 575);
+                }
+                velocidad = 0;
+                babe = new Bueno(posX, posY);
+                babe.setPosX(getWidth()/4);
+                babe.setPosY(getHeight() / 2);
+                reinicio = false;
+                empieza = false;
             }
                
                //Guarda el tiempo actual
@@ -331,9 +353,20 @@ import java.awt.event.MouseMotionListener;
              pausa = !pausa;
          }
          if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            if(escucharMouse)     //si esta dentro del rango permitido, deja que brinque
+            if(escucharMouse)  {   //si esta dentro del rango permitido, deja que brinque
                 brinca = true;
-            if(!gameOver)empieza = true;     //utilizada par empezar el movimiento del juego
+            }
+            if(!gameOver) {
+                empieza = true;     //utilizada par empezar el movimiento del juego
+            }
+         }
+         if (e.getKeyCode() == KeyEvent.VK_E) {
+             if(gameOver) {
+                 empieza = true;
+                 escucharMouse = true;
+                 reinicio = true;
+                 gameOver = false;
+             }
          }
      }
 
