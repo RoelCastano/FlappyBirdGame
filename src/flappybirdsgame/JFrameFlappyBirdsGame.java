@@ -239,12 +239,18 @@ import java.awt.event.MouseMotionListener;
                     empieza = false;
                     gameOver = true;
                 }
-               if(babe.getPosX()==columna.getPosX()){
-                   score++;
-               }
          }
 
 
+         
+         for (int m = 0; m < lista.size(); m+=2) { // checa pos de columnas para sumarle al score
+               columna = lista.get(m);
+                if(columna.getPosX()<(getWidth()/2)-90 && columna.getPosX()>(getWidth()/2)-92){
+                          score++;
+                }
+         }
+                        
+                        
          if (colisiono == true && tiempoColision <= 30) {
              tiempoColision++;
          } else {
