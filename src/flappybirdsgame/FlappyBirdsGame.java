@@ -18,7 +18,7 @@ public class FlappyBirdsGame {
     public static void main(String[] args) {
          	JFrameFlappyBirdsGame flappyBirdsGame = new JFrameFlappyBirdsGame();
  		flappyBirdsGame.setVisible(true);
-                flappyBirdsGame.setSize(500, 500);
+                flappyBirdsGame.setSize(300, 500);
     }
     
 }

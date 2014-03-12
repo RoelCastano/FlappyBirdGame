@@ -73,7 +73,7 @@ import java.awt.event.MouseMotionListener;
  	}
         
         public void init() {
-                setSize(500, 500);
+                setSize(300, 500);
                 score = 0;
                 colisiono = false;
                 tiempoColision = 0;
