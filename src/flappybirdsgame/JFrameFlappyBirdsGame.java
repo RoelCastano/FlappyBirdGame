@@ -216,6 +216,7 @@ import javax.swing.JOptionPane;
                 System.currentTimeMillis() - tiempoActual;
                if(gameOver){
                    escucharMouse = false;
+                   score = 0;
                }
                if(empieza){
                     if(brinca){
@@ -342,8 +343,16 @@ import javax.swing.JOptionPane;
         public void mousePressed(MouseEvent e) {
             if(escucharMouse)     //si esta dentro del rango permitido, deja que brinque
                 brinca = true;
-            if(!gameOver)empieza = true;     //utilizada par empezar el movimiento del juego
+            if(!gameOver) {     //utilizada par empezar el movimiento del juego
+                empieza = true;
+            }     
             //System.out.print("hola ");
+            if(gameOver) {
+                 empieza = true;
+                 escucharMouse = true;
+                 reinicio = true;
+                 gameOver = false;
+            }
                         
         }
 		
@@ -388,14 +397,12 @@ import javax.swing.JOptionPane;
             if(!gameOver) {
                 empieza = true;     //utilizada par empezar el movimiento del juego
             }
-         }
-         if (e.getKeyCode() == KeyEvent.VK_E) {
-             if(gameOver) {
+            if(gameOver) {
                  empieza = true;
                  escucharMouse = true;
                  reinicio = true;
                  gameOver = false;
-             }
+            }
          }
      }
 
@@ -436,6 +443,7 @@ import javax.swing.JOptionPane;
                         g.drawString("SCORE: " + score, 20, 40);
                         if(gameOver){
                             g.drawString("GAME OVER", getWidth()/2-40, getHeight()/2);
+                            g.drawString("PRESIONA MOUSE O ESPACIO PARA REINICIAR", getWidth()/2-150, getHeight()/2 + 40);
                         }
                         if(pausa){
                             g.drawString(""+babe.getPausa(),babe.getPosX()+babe.getAncho(), babe.getPosY());
