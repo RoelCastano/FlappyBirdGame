@@ -18,10 +18,13 @@ package flappybirdsgame;
 import javax.swing.JFrame;
 import java.applet.Applet;
 import java.applet.AudioClip;
+import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Color;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
@@ -40,7 +43,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Vector;
-import javax.swing.JOptionPane;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 //
 
  public class JFrameFlappyBirdsGame extends JFrame implements Runnable, KeyListener, MouseListener, MouseMotionListener
@@ -66,6 +70,7 @@ import javax.swing.JOptionPane;
         boolean empieza; // empieza el juego
         boolean reinicio; // para reiniciar el juego
         boolean desaparece;
+        boolean highscores;
         boolean gameOver; // cuando pierde el jugador
         boolean escucharMouse; //utilizado pra saber cuando hacerle caso al mouse
         boolean success; //utiliada para saber cuando pasa entre dos columnas
@@ -79,9 +84,8 @@ import javax.swing.JOptionPane;
         private String nombreArchivo;    //Nombre del archivo.
         private String[] arr;    //Arreglo del archivo divido.
         private Vector vec;    // Objeto vector para agregar el puntaje.
-
  	
- 	public JFrameFlappyBirdsGame(){
+ 	public JFrameFlappyBirdsGame() throws IOException{
  		setTitle("BEST GAME EVER");
  		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 //Carga los clips de sonido
@@ -91,7 +95,7 @@ import javax.swing.JOptionPane;
                 start();
  	}
         
-        public void init() {
+        public void init() throws IOException {
                 setSize(350, 600);
                 score = 0;
                 reinicio = false;
@@ -122,7 +126,7 @@ import javax.swing.JOptionPane;
                 
                 nombreArchivo = "Puntaje.txt";
                 vec = new Vector();
-
+                leeArchivo();
 
 		//Pinta el fondo del Applet de color amarillo		
 		setBackground(Color.white);
@@ -282,8 +286,6 @@ import javax.swing.JOptionPane;
                     gameOver = true;
                 }
          }
-
-
          
          for (int m = 0; m < lista.size(); m+=2) { // checa pos de columnas para sumarle al score
                columna = lista.get(m);
@@ -361,7 +363,11 @@ import javax.swing.JOptionPane;
 
 		// Actualiza el Foreground.
 		dbg.setColor (getForeground());
-		paint1(dbg);
+            try {
+                paint1(dbg);
+            } catch (IOException ex) {
+                Logger.getLogger(JFrameFlappyBirdsGame.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
 		// Dibuja la imagen actualizada
 		g.drawImage(dbImage, 0, 0, this);
@@ -390,8 +396,14 @@ import javax.swing.JOptionPane;
                  gameOver = false;
             }
          }
-         if (e.getKeyCode() == KeyEvent.VK_F){
-             
+         if (e.getKeyCode() == KeyEvent.VK_F) {
+             if (highscores){
+                 highscores = false;
+                 pausa = false;
+             } else {
+                 pausa = true;
+                 highscores = true;
+             }
          }
      }
 
@@ -420,7 +432,7 @@ import javax.swing.JOptionPane;
 	 * ademas que cuando la imagen es cargada te despliega una advertencia.
 	 * @param g es el <code>objeto grafico</code> usado para dibujar.
 	 */
-	public void paint1(Graphics g) {
+	public void paint1(Graphics g) throws IOException {
             
 		if (babe != null && columna != null) {
                         g.drawImage(babe.getImagen(), babe.getPosX(), babe.getPosY(), this);
@@ -435,10 +447,16 @@ import javax.swing.JOptionPane;
                             g.drawString("PRESIONA MOUSE O ESPACIO PARA REINICIAR", getWidth()/2-150, getHeight()/2 + 40);
                         }
                         if(pausa){
-                            g.drawString(""+babe.getPausa(),babe.getPosX()+babe.getAncho(), babe.getPosY());
+                            g.drawString("PAUSA",getWidth()/2-40, getHeight()/5);
                         }
                         if(desaparece && colisiono && tiempoColision<=30 && !pausa){
                             g.drawString(""+babe.getDesaparece(),babe.getPosX()+babe.getAncho(), babe.getPosY());
+                        }
+                        if(highscores) {
+                            for (int i = 0; i < vec.size(); i++){
+                                Puntaje sc = (Puntaje) vec.get(i);
+                                g.drawString(sc.getNombre() + "= " + sc.getPuntaje(),getWidth()/2-40, getHeight()/4 + (i*20));
+                            }
                         }
 			
 		} else {
@@ -476,21 +494,4 @@ import javax.swing.JOptionPane;
         }
         fileIn.close();
     }
-
-    /**
-     * Metodo que agrega la informacion del vector al archivo.
-     *
-     * @throws IOException
-     */
-    public void grabaArchivo() throws IOException {
-        PrintWriter fileOut = new PrintWriter(new FileWriter(nombreArchivo));
-        for (int i = 0; i < vec.size(); i++) {
-            Puntaje x;
-            x = (Puntaje) vec.get(i);
-            fileOut.println(x.toString());
-        }
-        fileOut.close();
-    }
-    
-
- }
+}
