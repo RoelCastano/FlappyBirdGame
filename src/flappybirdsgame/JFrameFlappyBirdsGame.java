@@ -36,24 +36,25 @@ import java.awt.event.MouseMotionListener;
 
  public class JFrameFlappyBirdsGame extends JFrame implements Runnable, KeyListener, MouseListener, MouseMotionListener
  {
-        private int posClicX; // posicion del mouse en x
-        private int posClicY; // posicion del mouse en y
 	private long tiempoActual;
         boolean colisiono;              //flag de que colisiono
         int tiempoColision;             //contador para dejar la imagen colisionada
 	int posX, posY;
 	private static final long serialVersionUID = 1L;
 	// Se declaran las variables.
-	private int direccion;    // Direccion del elefante
 	private Image dbImage;	// Imagen a proyectar	
 	private Graphics dbg;	// Objeto grafico
 	private Bueno babe;    // Objeto de la clase Bueno
 	private Malo columna;    //Objeto de la clase Malo
         private LinkedList<Malo> lista; // lista para guardar los monitos malos
         private int velocidad;
+        private  static int UPWARD_SPEED = 5;
+        private static int GRAVITY = 2; 
         boolean pausa; // para pausa
         boolean brinca; // para checar si brinca
+        boolean empieza; // empieza el juego
         boolean desaparece;
+        private int contador;
         private SoundClip explosion;	//Sonido de explosion
 	private SoundClip beep;	//Sonido de beep
         int score;
@@ -76,19 +77,28 @@ import java.awt.event.MouseMotionListener;
                 score = 0;
                 colisiono = false;
                 tiempoColision = 0;
-		direccion = 0;
+                contador = 0;
 		int posX = (int) (getWidth() / 4);    // posicion en x en medio de la applet
 		int posY = (int) (getHeight() /2);    // posicion en y enmedio de la applet
-                velocidad = posY;
+                velocidad = 0;
 		babe = new Bueno(posX,posY);
 		setBackground (Color.yellow);
                 lista = new LinkedList<Malo>();  //lista encadenada para guardar malos
                 pausa = false; // iniciliza la pausa como false
                 brinca = false;
+                empieza = false; // inicio juego
                 desaparece = false;
                 columna = new Malo(getWidth(),-100);
                 lista.add(columna);
-                columna = new Malo(getWidth(),400);
+                columna = new Malo(getWidth(),300);
+                lista.add(columna);
+                columna = new Malo(getWidth()+200,-200);
+                lista.add(columna);
+                columna = new Malo(getWidth()+200,200);
+                lista.add(columna);
+                columna = new Malo(getWidth()+400,-50);
+                lista.add(columna);
+                columna = new Malo(getWidth()+400,350);
                 lista.add(columna);
                 
 
@@ -170,12 +180,20 @@ import java.awt.event.MouseMotionListener;
                //Determina el tiempo que ha transcurrido desde que el Applet inicio su ejecución
                long tiempoTranscurrido =
                 System.currentTimeMillis() - tiempoActual;
-               velocidad+=2;
-               if(brinca){
-                   velocidad-=40;
-                   brinca = false;
+               if(empieza){
+                    if(brinca){
+                        velocidad = -UPWARD_SPEED;
+                        brinca = false;
+                    }
+                    contador++;
+                    if(contador>=8){
+
+                        velocidad += (GRAVITY);
+                        contador =0;
+                    }
+
+                    babe.setPosY(babe.getPosY()+velocidad);
                }
-               babe.setPosY(velocidad);
                
                for (int i = 0; i < lista.size(); i++){
                    columna = lista.get(i);
@@ -216,9 +234,8 @@ import java.awt.event.MouseMotionListener;
 
         public void mousePressed(MouseEvent e) {
                 
-            posClicX = e.getX();
-            posClicY = e.getY();
             brinca = true;
+            empieza = true;
             //System.out.print("hola ");
                         
         }
