@@ -48,7 +48,7 @@ import java.awt.event.MouseMotionListener;
 	private Malo vampiro;    //Objeto de la clase Malo
         private LinkedList<Malo> lista; // lista para guardar los monitos malos
         private int velocidad;
-        private  static int UPWARD_SPEED = 8;
+        private  static int UPWARD_SPEED = 9;
         private static int GRAVITY = 2; 
         boolean pausa; // para pausa
         boolean brinca; // para checar si brinca
@@ -73,7 +73,7 @@ import java.awt.event.MouseMotionListener;
  	}
         
         public void init() {
-                setSize(300, 500);
+                setSize(350, 600);
                 score = 0;
                 colisiono = false;
                 tiempoColision = 0;
