@@ -3,9 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/roelcastano/Desktop/Programas/Java/FlappyBirdsGame/src/flappybirdsgame/JFrameFlappyBirdsGame.java</file>
-            <file>file:/Users/roelcastano/Desktop/Programas/Java/FlappyBirdsGame/src/flappybirdsgame/FlappyBirdsGame.java</file>
-            <file>file:/Users/roelcastano/Desktop/Programas/Java/FlappyBirdsGame/src/flappybirdsgame/Malo.java</file>
+            <file>file:/Users/Henry/NetBeansProjects/FlappyBirdGame/src/flappybirdsgame/Bueno.java</file>
+            <file>file:/Users/Henry/NetBeansProjects/FlappyBirdGame/src/flappybirdsgame/Malo.java</file>
+            <file>file:/Users/Henry/NetBeansProjects/FlappyBirdGame/src/flappybirdsgame/FlappyBirdsGame.java</file>
+            <file>file:/Users/Henry/NetBeansProjects/FlappyBirdGame/src/flappybirdsgame/JFrameFlappyBirdsGame.java</file>
+            <file>file:/Users/Henry/NetBeansProjects/FlappyBirdGame/src/flappybirdsgame/SoundClip.java</file>
+            <file>file:/Users/Henry/NetBeansProjects/FlappyBirdGame/src/flappybirdsgame/Base.java</file>
+            <file>file:/Users/Henry/NetBeansProjects/FlappyBirdGame/src/flappybirdsgame/Animacion.java</file>
         </group>
     </open-files>
 </project-private>
