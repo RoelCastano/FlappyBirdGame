@@ -48,7 +48,7 @@ import java.awt.event.MouseMotionListener;
 	private Image dbImage;	// Imagen a proyectar	
 	private Graphics dbg;	// Objeto grafico
 	private Bueno babe;    // Objeto de la clase Bueno
-	private Malo vampiro;    //Objeto de la clase Malo
+	private Malo columna;    //Objeto de la clase Malo
         private LinkedList<Malo> lista; // lista para guardar los monitos malos
         private int velocidad;
         boolean pausa; // para pausa
@@ -86,21 +86,11 @@ import java.awt.event.MouseMotionListener;
                 pausa = false; // iniciliza la pausa como false
                 brinca = false;
                 desaparece = false;
-
+                columna = new Malo(getWidth(),-100);
+                lista.add(columna);
+                columna = new Malo(getWidth(),400);
+                lista.add(columna);
                 
-                //crea una lista con los numeros 6,10 o 12
-                listaNum = new ArrayList<>();
-                listaNum.add(6);
-                listaNum.add(10);
-                listaNum.add(12);
-                listaNum.add(6);
-                listaNum.add(10);
-                listaNum.add(12);
-                Collections.shuffle(listaNum); //revuelve la lista
-                
-                numMalos = listaNum.get(0);// saca un numero random de la lista
-                int mitadMalos = numMalos/2;
-
 
 
 		//Pinta el fondo del Applet de color amarillo		
@@ -186,6 +176,11 @@ import java.awt.event.MouseMotionListener;
                    brinca = false;
                }
                babe.setPosY(velocidad);
+               
+               for (int i = 0; i < lista.size(); i++){
+                   columna = lista.get(i);
+                   columna.setPosX(columna.getPosX() - 2);
+               }
                //Guarda el tiempo actual
                tiempoActual += tiempoTranscurrido;
                //Actualiza la animación en base al tiempo transcurrido
@@ -291,8 +286,12 @@ import java.awt.event.MouseMotionListener;
 	 */
 	public void paint1(Graphics g) {
             
-		if (babe != null) {
+		if (babe != null && columna != null) {
                         g.drawImage(babe.getImagen(), babe.getPosX(), babe.getPosY(), this);
+                        for (int i = 0; i < lista.size(); i++) {
+                            columna = lista.get(i);
+                            g.drawImage(columna.getImagen(), columna.getPosX(), columna.getPosY(), this);
+                        }
                         //score = vampiro.getConteo();
                         g.drawString("SCORE: " + score, 20, 40);
                         if(pausa){
