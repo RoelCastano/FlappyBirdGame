@@ -49,13 +49,16 @@ import java.awt.event.MouseMotionListener;
 	private Malo columna1;    //Objeto de la clase Malo
 	private Malo columna2;    //Objeto de la clase Malo
         private LinkedList<Malo> lista; // lista para guardar los monitos malos
-        private int velocidad;
-        private  static int UPWARD_SPEED = 8;
+        private int velocidad;     //velocidad utilizada para el movimiento del flappy
+        private  static int UPWARD_SPEED = 9;
         private static int GRAVITY = 2; 
         boolean pausa; // para pausa
         boolean brinca; // para checar si brinca
         boolean empieza; // empieza el juego
         boolean desaparece;
+        boolean gameOver; // cuando pierde el jugador
+        boolean escucharMouse; //utilizado pra saber cuando hacerle caso al mouse
+        boolean success; //utiliada para saber cuando pasa entre dos columnas
         private int contador;
         private SoundClip explosion;	//Sonido de explosion
 	private SoundClip beep;	//Sonido de beep
@@ -66,7 +69,6 @@ import java.awt.event.MouseMotionListener;
  	public JFrameFlappyBirdsGame(){
  		setTitle("BEST GAME EVER");
  		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 		//setSize(500, 500);
                 //Carga los clips de sonido
 		explosion = new SoundClip("sonidos/Explosion.wav");
 		beep = new SoundClip("sonidos/beep-07.wav");
@@ -75,11 +77,13 @@ import java.awt.event.MouseMotionListener;
  	}
         
         public void init() {
-                setSize(300, 500);
+                setSize(350, 600);
                 score = 0;
                 colisiono = false;
+                success = false;
                 tiempoColision = 0;
                 contador = 0;
+                escucharMouse = true;  // empieza escuchando el mouse
 		int posX = (int) (getWidth() / 4);    // posicion en x en medio de la applet
 		int posY = (int) (getHeight() /2);    // posicion en y enmedio de la applet
                 velocidad = 0;
@@ -87,8 +91,9 @@ import java.awt.event.MouseMotionListener;
 		setBackground (Color.yellow);
                 lista = new LinkedList<Malo>();  //lista encadenada para guardar malos
                 pausa = false; // iniciliza la pausa como false
-                brinca = false;
+                brinca = false; //inizializa la booleana de brinco como false
                 empieza = false; // inicio juego
+                gameOver = false; // empieza false el gameOver
                 desaparece = false;
             for (int i = 0; i < 3; i++) {
                 int y = -50 + (int)(Math.random()*-300);
@@ -211,6 +216,29 @@ import java.awt.event.MouseMotionListener;
 	 * con las orillas del <code>Applet</code>.
 	 */
      public void checaColision() {
+         
+         if(babe.getPosY()<50){    //cuando esta en el tope de arriba ya no le hace caso al mouse
+             escucharMouse = false;
+         }
+         else{
+             escucharMouse = true;
+         }
+         
+         if(babe.getPosY()>(getHeight()-40)){
+             empieza = false;
+             gameOver = true;
+         }
+         for (int i = 0; i < lista.size(); i++) {
+               columna = lista.get(i);
+               if(babe.intersecta(columna)){
+                    empieza = false;
+                    gameOver = true;
+                }
+               if(babe.getPosX()==columna.getPosX()){
+                   score++;
+               }
+         }
+
 
          if (colisiono == true && tiempoColision <= 30) {
              tiempoColision++;
@@ -246,9 +274,9 @@ import java.awt.event.MouseMotionListener;
         public void mouseExited(MouseEvent e) {}
 
         public void mousePressed(MouseEvent e) {
-                
-            brinca = true;
-            empieza = true;
+            if(escucharMouse)     //si esta dentro del rango permitido, deja que brinque
+                brinca = true;
+            empieza = true;     //utilizada par empezar el movimiento del juego
             //System.out.print("hola ");
                         
         }
@@ -324,6 +352,9 @@ import java.awt.event.MouseMotionListener;
                         }
                         //score = vampiro.getConteo();
                         g.drawString("SCORE: " + score, 20, 40);
+                        if(gameOver){
+                            g.drawString("GAME OVER", getWidth()/2, getHeight()/2);
+                        }
                         if(pausa){
                             g.drawString(""+babe.getPausa(),babe.getPosX()+babe.getAncho(), babe.getPosY());
                         }
