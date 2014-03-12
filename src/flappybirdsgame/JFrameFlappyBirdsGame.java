@@ -245,7 +245,7 @@ import java.awt.event.MouseMotionListener;
          
          for (int m = 0; m < lista.size(); m+=2) { // checa pos de columnas para sumarle al score
                columna = lista.get(m);
-                if(columna.getPosX()<(getWidth()/2)-80 && columna.getPosX()>(getWidth()/2)-82){
+                if(columna.getPosX()<(getWidth()/2)-90 && columna.getPosX()>(getWidth()/2)-92){
                           score++;
                 }
          }
